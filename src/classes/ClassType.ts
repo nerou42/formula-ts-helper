@@ -2,6 +2,7 @@ import { getDefaultCompatibleOperands, getDefaultImplementedOperators, getDefaul
 import { MemberAccsessType } from "../MemberAccsessType";
 import { Operator } from "../Operator";
 import { Type } from "../Type";
+import { TypeProvider } from "../TypeProvider";
 import { FieldType } from "./FieldType";
 
 /**
@@ -66,7 +67,7 @@ export class ClassType implements Type {
   }
 
   getCompatibleOperands(operator: Operator): Type[] {
-    const compatible = getDefaultCompatibleOperands(this, operator);
+    const compatible = getDefaultCompatibleOperands(new TypeProvider(), this, operator);
     if (operator === Operator.MEMBER_ACCESS) {
       for (const [identifier, field] of this.fields) {
         compatible.push(new MemberAccsessType(identifier));
@@ -76,7 +77,7 @@ export class ClassType implements Type {
   }
 
   getOperatorResultType(operator: Operator, otherType: Type | null): Type | null {
-    const defaultResult = getDefaultOperatorResultType(this, operator, otherType);
+    const defaultResult = getDefaultOperatorResultType(new TypeProvider(), this, operator, otherType);
     if(defaultResult !== null) {
       return defaultResult;
     }

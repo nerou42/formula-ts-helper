@@ -1,4 +1,3 @@
-import { getDefaultImplementedOperators, getDefaultOperatorResultType } from "./BaseType";
 import { IntegerType } from "./IntegerType";
 import { Operator } from "./Operator";
 import { Type } from "./Type";
@@ -8,11 +7,14 @@ import { FieldType } from "./classes/FieldType";
 /**
  * @author Timo Lehnertz
  */
-export class StringType extends ClassType {
+export class StringType {
+
+  private classType: ClassType;
 
   constructor() {
     const lengthField = new FieldType(true, new IntegerType());
-    super(null, 'String', new Map([['length', lengthField]]));
+    // super(null, 'String', new Map([['length', lengthField]]));
+    this.classType = new ClassType(null, 'String', new Map([['length', lengthField]]));
   }
 
   assignableBy(type: Type): boolean {
@@ -24,11 +26,11 @@ export class StringType extends ClassType {
   }
 
   getImplementedOperators(): Operator[] {
-    return getDefaultImplementedOperators().concat([Operator.ADDITION]);
+    return this.classType.getImplementedOperators().concat([Operator.ADDITION]);
   }
 
   getCompatibleOperands(operator: Operator): Type[] {
-    const compatible = super.getCompatibleOperands(operator);
+    const compatible = this.classType.getCompatibleOperands(operator);
     if (operator === Operator.ADDITION) {
       compatible.push(new StringType());
     }
@@ -36,15 +38,14 @@ export class StringType extends ClassType {
   }
 
   getOperatorResultType(operator: Operator, otherType: Type | null): Type | null {
-    const defaultResult = super.getOperatorResultType(operator, otherType);
-    if(defaultResult !== null) {
+    const defaultResult = this.classType.getOperatorResultType(operator, otherType);
+    if (defaultResult !== null) {
       return defaultResult;
     }
     if (operator === Operator.ADDITION && otherType instanceof StringType) {
       return new StringType();
-    } else {
-      return super.getOperatorResultType(operator, otherType);
     }
+    return null;
   }
 
   toString(): string {

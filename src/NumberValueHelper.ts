@@ -4,6 +4,7 @@ import { FloatType } from "./FloatType";
 import { IntegerType } from "./IntegerType";
 import { Operator } from "./Operator";
 import { Type } from "./Type";
+import { TypeProvider } from "./TypeProvider";
 import { TypeType } from "./TypeType";
 
 /**
@@ -48,7 +49,7 @@ export class NumberValueHelper {
   }
 
   static getCompatibleOperands(self: IntegerType | FloatType, operator: Operator): Type[] {
-    const compatible = getDefaultCompatibleOperands(self, operator);
+    const compatible = getDefaultCompatibleOperands(new TypeProvider(), self, operator);
     switch (operator) {
       case Operator.ADDITION:
       case Operator.SUBTRACTION:
@@ -75,7 +76,7 @@ export class NumberValueHelper {
   }
 
   static getOperatorResultType(typeA: IntegerType | FloatType, operator: Operator, typeB: Type | null): Type | null {
-    const defaultType = getDefaultOperatorResultType(typeA, operator, typeB);
+    const defaultType = getDefaultOperatorResultType(new TypeProvider(), typeA, operator, typeB);
     if(defaultType !== null) {
       return defaultType;
     }

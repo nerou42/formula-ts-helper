@@ -1,9 +1,6 @@
-import { BooleanType } from "./BooleanType";
-import { MixedType } from "./MixedType";
 import { Operator } from "./Operator";
-import { StringType } from "./StringType";
 import { Type } from "./Type";
-import { TypeType } from "./TypeType";
+import { TypeProviderInterface } from "./TypeProviderInterface";
 
 
 export function getDefaultImplementedOperators(): Operator[] {
@@ -20,7 +17,7 @@ export function getDefaultImplementedOperators(): Operator[] {
 }
 
 
-export function getDefaultCompatibleOperands(self: Type, operator: Operator): Type[] {
+export function getDefaultCompatibleOperands(typeProvider: TypeProviderInterface, self: Type, operator: Operator): Type[] {
   const compatible: Type[] = [];
   switch (operator) {
     case Operator.DIRECT_ASSIGNMENT:
@@ -29,13 +26,13 @@ export function getDefaultCompatibleOperands(self: Type, operator: Operator): Ty
       compatible.push(self);
       break;
     case Operator.TYPE_CAST:
-      compatible.push(new TypeType(new BooleanType()));
-      compatible.push(new TypeType(new StringType()));
+      compatible.push(typeProvider.buildTypeType(typeProvider.buildBooleanType()));
+      compatible.push(typeProvider.buildTypeType(typeProvider.buildStringType()));
       break;
     case Operator.LOGICAL_AND:
     case Operator.LOGICAL_OR:
     case Operator.LOGICAL_XOR:
-      compatible.push(new MixedType());
+      compatible.push(typeProvider.buildMixedType());
       break;
     case Operator.LOGICAL_NOT:
       // unary
@@ -44,7 +41,7 @@ export function getDefaultCompatibleOperands(self: Type, operator: Operator): Ty
   return compatible;
 }
 
-export function getDefaultOperatorResultType(self: Type, operator: Operator, otherType: Type | null): Type | null {
+export function getDefaultOperatorResultType(typeProvider: TypeProviderInterface, self: Type, operator: Operator, otherType: Type | null): Type | null {
   switch (operator) {
     case Operator.DIRECT_ASSIGNMENT:
     case Operator.DIRECT_ASSIGNMENT_OLD_VAL:
@@ -56,14 +53,14 @@ export function getDefaultOperatorResultType(self: Type, operator: Operator, oth
       if (otherType === null || !self.assignableBy(otherType)) {
         break;
       }
-      return new BooleanType();
+      return typeProvider.buildBooleanType();
     case Operator.TYPE_CAST:
-      if (otherType instanceof TypeType) {
-        if (otherType.getType() instanceof BooleanType) {
-          return new BooleanType();
+      if (otherType !== null && typeProvider.isTypeType(otherType)) {
+        if (typeProvider.isBooleanType(typeProvider.getTypeTypeType(otherType))) {
+          return typeProvider.buildBooleanType();
         }
-        if (otherType.getType().equals(new StringType())) {
-          return new StringType();
+        if (typeProvider.isStringType(typeProvider.getTypeTypeType(otherType))) {
+          return typeProvider.buildStringType();
         }
       }
       break;
@@ -71,12 +68,12 @@ export function getDefaultOperatorResultType(self: Type, operator: Operator, oth
     case Operator.LOGICAL_OR:
     case Operator.LOGICAL_XOR:
       if (otherType !== null) {
-        return new BooleanType();
+        return typeProvider.buildBooleanType();
       }
       break;
     case Operator.LOGICAL_NOT:
       if (otherType === null) {
-        return new BooleanType();
+        return typeProvider.buildBooleanType();
       }
       break;
   }

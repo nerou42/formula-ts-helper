@@ -1,5 +1,3 @@
-import { pathsToModuleNameMapper } from "ts-jest";
-
 export default {
   roots: ["<rootDir>/src"],
   transform: {

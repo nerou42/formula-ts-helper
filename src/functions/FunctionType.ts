@@ -1,6 +1,7 @@
 import { getDefaultCompatibleOperands, getDefaultImplementedOperators, getDefaultOperatorResultType } from "../BaseType";
 import { Operator } from "../Operator";
 import { Type } from "../Type";
+import { TypeProvider } from "../TypeProvider";
 import { OuterFunctionArgumentListType } from "./OuterFunctionArgumentListType";
 
 export type ReturnTypeCallback = ((outerFunctionArgumentListType: OuterFunctionArgumentListType) => null | Type);
@@ -46,7 +47,7 @@ export class FunctionType implements Type {
   }
 
   getCompatibleOperands(operator: Operator): Type[] {
-    const compatible = getDefaultCompatibleOperands(this, operator);
+    const compatible = getDefaultCompatibleOperands(new TypeProvider(), this, operator);
     if (operator === Operator.CALL) {
       compatible.push(this.arguments);
     }
@@ -54,7 +55,7 @@ export class FunctionType implements Type {
   }
 
   getOperatorResultType(operator: Operator, otherType: Type | null): Type | null {
-    const defaultResult = getDefaultOperatorResultType(this, operator, otherType);
+    const defaultResult = getDefaultOperatorResultType(new TypeProvider(), this, operator, otherType);
     if(defaultResult !== null) {
       return defaultResult;
     }

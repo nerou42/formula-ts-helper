@@ -2,6 +2,7 @@ import { getDefaultCompatibleOperands, getDefaultImplementedOperators, getDefaul
 import { DateIntervalType } from "./DateIntervalType";
 import { Operator } from "./Operator";
 import { Type } from "./Type";
+import { TypeProvider } from "./TypeProvider";
 
 /**
  * @author Timo Lehnertz
@@ -21,7 +22,7 @@ export class DateTimeImmutableType implements Type {
   }
 
   getCompatibleOperands(operator: Operator): Type[] {
-    const compatible = getDefaultCompatibleOperands(this, operator);
+    const compatible = getDefaultCompatibleOperands(new TypeProvider(), this, operator);
     switch (operator) {
       case Operator.ADDITION:
       case Operator.SUBTRACTION:
@@ -32,7 +33,7 @@ export class DateTimeImmutableType implements Type {
   }
 
   getOperatorResultType(operator: Operator, otherType: Type | null): Type | null {
-    const defaultResult = getDefaultOperatorResultType(this, operator, otherType);
+    const defaultResult = getDefaultOperatorResultType(new TypeProvider(), this, operator, otherType);
     if(defaultResult !== null) {
       return defaultResult;
     }

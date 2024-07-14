@@ -2,6 +2,7 @@ import { getDefaultOperatorResultType } from "./BaseType";
 import { NeverType } from "./NeverType";
 import { Operator, OperatorHelper, OperatorType } from "./Operator";
 import { Type } from "./Type";
+import { TypeProvider } from "./TypeProvider";
 
 /**
  * @author Timo Lehnertz
@@ -92,7 +93,7 @@ export class CompoundType implements Type {
   }
 
   getOperatorResultType(operator: Operator, otherType: Type | null): Type | null {
-    const defaultResult = getDefaultOperatorResultType(this, operator, otherType);
+    const defaultResult = getDefaultOperatorResultType(new TypeProvider(), this, operator, otherType);
     if (defaultResult !== null) {
       return defaultResult;
     }

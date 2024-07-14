@@ -1,4 +1,4 @@
-import { getDefaultImplementedOperators, getDefaultOperatorResultType } from "./BaseType";
+import { getDefaultImplementedOperators } from "./BaseType";
 import { CompoundType } from "./CompoundType";
 import { IntegerType } from "./IntegerType";
 import { IteratableType } from "./IteratableType";
