@@ -3,6 +3,8 @@ import { BooleanType } from "./BooleanType";
 import { CompoundType } from "./CompoundType";
 import { DateIntervalType } from "./DateIntervalType";
 import { DateTimeImmutableType } from "./DateTimeImmutableType";
+import { EnumInstanceType } from "./EnumInstanceType";
+import { EnumTypeType } from "./EnumTypeType";
 import { FloatType } from "./FloatType";
 import { IntegerType } from "./IntegerType";
 import { MemberAccsessType } from "./MemberAccsessType";
@@ -19,13 +21,14 @@ import { ClassTypeType } from "./classes/ClassTypeType";
 import { ConstructorType } from "./classes/ConstructorType";
 import { FieldType } from "./classes/FieldType";
 import { FunctionType } from "./functions/FunctionType";
+import { OuterFunctionArgument } from "./functions/OuterFunctionArgument";
 import { OuterFunctionArgumentListType } from "./functions/OuterFunctionArgumentListType";
 
 const testClassType = new ClassType(null, 'TestClass', new Map([['length', new FieldType(false, new IntegerType())]]));
 
 const typeDescriptions: TypeDescription[] = [
   {
-    type: testClassType,
+    type: new ClassType(testClassType, 'ChildClass', new Map([['stringField', new FieldType(false, new StringType())]])),
     operatorDescriptions: [
       {
         operator: Operator.MEMBER_ACCESS,
@@ -33,19 +36,23 @@ const typeDescriptions: TypeDescription[] = [
           {
             operandType: new MemberAccsessType('length'),
             resultType: new IntegerType()
+          }, {
+            operandType: new MemberAccsessType('stringField'),
+            resultType: new StringType()
           }
         ]
       }
-    ]
+    ],
+    notEqualType: [testClassType, new IntegerType()],
   }, {
-    type: new ClassTypeType(new ConstructorType(new OuterFunctionArgumentListType([], false), testClassType)),
+    type: new ClassTypeType(new ConstructorType(new OuterFunctionArgumentListType([new OuterFunctionArgument(new IntegerType(), false, false, 'i')], false), testClassType)),
     operatorDescriptions: [
       {
         operator: Operator.NEW,
         compatibleTypes: [
           {
             operandType: null,
-            resultType: new ConstructorType(new OuterFunctionArgumentListType([], false), testClassType),
+            resultType: new ConstructorType(new OuterFunctionArgumentListType([new OuterFunctionArgument(new IntegerType(), false, false, 'i')], false), testClassType),
           }
         ]
       }
@@ -138,6 +145,26 @@ const typeDescriptions: TypeDescription[] = [
           operandType: new DateIntervalType(),
           resultType: new DateTimeImmutableType(),
         }]
+      }
+    ]
+  },
+  {
+    type: new EnumInstanceType(new EnumTypeType('Enum', ['a', 'b'])),
+  },
+  {
+    type: new EnumTypeType('Enum', ['a', 'b']),
+    operatorDescriptions: [
+      {
+        operator: Operator.MEMBER_ACCESS,
+        compatibleTypes: [
+          {
+            operandType: new MemberAccsessType('a'),
+            resultType: new EnumInstanceType(new EnumTypeType('Enum', ['a', 'b'])),
+          }, {
+            operandType: new MemberAccsessType('b'),
+            resultType: new EnumInstanceType(new EnumTypeType('Enum', ['a', 'b'])),
+          }
+        ]
       }
     ]
   },
@@ -264,13 +291,21 @@ const typeDescriptions: TypeDescription[] = [
   { type: new NullType() },
   {
     type: new StringType(),
-    operatorDescriptions: [{
-      operator: Operator.ADDITION,
-      compatibleTypes: [{
-        operandType: new StringType(),
-        resultType: new StringType(),
-      }]
-    }]
+    operatorDescriptions: [
+      {
+        operator: Operator.ADDITION,
+        compatibleTypes: [{
+          operandType: new StringType(),
+          resultType: new StringType(),
+        }]
+      },{
+        operator: Operator.MEMBER_ACCESS,
+        compatibleTypes: [{
+          operandType: new MemberAccsessType('length'),
+          resultType: new IntegerType(),
+        }]
+      }
+    ]
   },
   { type: new TypeType(new NeverType()) },
   { type: new VoidType() },
@@ -351,7 +386,14 @@ function compareImplementedOperators(expected: Operator[], actual: Operator[]): 
 
 function testType(typeDescription: TypeDescription): void {
   expect(typeDescription.type.equals(typeDescription.equalType ?? typeDescription.type)).toBeTruthy();
-  expect(typeDescription.type.equals(typeDescription.notEqualType ?? invalidType)).toBeFalsy();
+  if(Array.isArray(typeDescription.notEqualType)) {
+    for (const notEqualType of typeDescription.notEqualType) {
+      expect(typeDescription.type.equals(notEqualType)).toBeFalsy();
+    }
+  } else {
+    expect(typeDescription.type.equals(typeDescription.notEqualType ?? invalidType)).toBeFalsy();
+  }
+
 
   expect(typeDescription.type.assignableBy(typeDescription.assignableType ?? typeDescription.type)).toBeTruthy();
   if (typeDescription.notAssignableType === null) {
@@ -420,7 +462,7 @@ interface TypeDescription {
   type: Type;
   operatorDescriptions?: OperatorDescription[];
   equalType?: Type;
-  notEqualType?: Type;
+  notEqualType?: Type|Type[];
   assignableType?: Type;
   notAssignableType?: Type | null;
   excludeTypeCasts?: boolean;

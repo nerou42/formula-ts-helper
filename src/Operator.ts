@@ -81,7 +81,7 @@ export class OperatorHelper {
       case Operator.DIRECT_ASSIGNMENT_OLD_VAL:
         return leftExpression + '=' + rightExpression;
       case Operator.TYPE_CAST:
-        return 'leftExpression+typecast' + rightExpression;
+        return leftExpression + '(' + rightExpression + ')';
       case Operator.ARRAY_ACCESS:
         return leftExpression + '[' + rightExpression + ']';
       case Operator.CALL:

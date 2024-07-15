@@ -30,7 +30,7 @@ export class ClassType implements Type {
     if (!(type instanceof ClassType)) {
       return false;
     }
-    return this.equals(type) || type.extends(this);
+    return type.extends(this) || this.equals(type);
   }
 
   extends(classType: ClassType): boolean {

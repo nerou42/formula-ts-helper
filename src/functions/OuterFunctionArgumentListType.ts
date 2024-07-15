@@ -28,9 +28,9 @@ export class OuterFunctionArgumentListType implements Type {
           throw Error('Optional parameter can\'t be followed by VArgs');
         }
         optional = true;
-        if (i === outerArguments.length - 1 && isVArgs && !argument.optional) {
-          throw Error('VArg parameter must be optional');
-        }
+      }
+      if (i === outerArguments.length - 1 && isVArgs && !argument.optional) {
+        throw Error('Varg parameter must be optional');
       }
     }
     // check that vargs are valid
@@ -49,7 +49,6 @@ export class OuterFunctionArgumentListType implements Type {
 
   getMinArgumentCount(): number {
     let count = 0;
-    /** @var OuterFunctionArgument argument */
     for (const argument of this.arguments) {
       if (argument.optional) {
         break;
