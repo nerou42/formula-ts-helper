@@ -1,34 +1,8 @@
 import { Operator, OperatorHelper } from "./Operator";
 
-const allOperators = [
-  Operator.ADDITION,
-  Operator.SUBTRACTION,
-  Operator.UNARY_PLUS,
-  Operator.UNARY_MINUS,
-  Operator.MULTIPLICATION,
-  Operator.DIVISION,
-  Operator.MODULO,
-  Operator.EQUALS,
-  Operator.GREATER,
-  Operator.LESS,
-  Operator.LOGICAL_AND,
-  Operator.LOGICAL_OR,
-  Operator.DIRECT_ASSIGNMENT,
-  Operator.DIRECT_ASSIGNMENT_OLD_VAL,
-  Operator.MEMBER_ACCESS,
-  Operator.SCOPE_RESOLUTION,
-  Operator.LOGICAL_NOT,
-  Operator.LOGICAL_XOR,
-  Operator.INSTANCEOF,
-  Operator.NEW,
-  Operator.ARRAY_ACCESS,
-  Operator.CALL,
-  Operator.TYPE_CAST,
-];
-
 describe('Operator', () => {
   test('toString', () => {
-    for (const operator of allOperators) {
+    for (const operator of OperatorHelper.getAllOperators()) {
       if (operator === Operator.TYPE_CAST) {
         expect(new OperatorHelper(operator).toString('abc', 'def')).toBe(`abc(def)`);
       } else if (operator === Operator.ARRAY_ACCESS) {

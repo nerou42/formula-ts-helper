@@ -42,7 +42,11 @@ export class ArrayType extends ClassType implements IteratableType {
 
   toString(): string {
     if (this.keyType instanceof IntegerType) {
-      return this.elementsType.toString() + '[]';
+      if (this.elementsType instanceof CompoundType) {
+        return '(' + this.elementsType.toString() + ')';
+      } else {
+        return this.elementsType.toString() + '[]';
+      }
     } else {
       return 'array<' + this.keyType.toString() + ',' + this.elementsType.toString() + '>';
     }
@@ -82,7 +86,7 @@ export class ArrayType extends ClassType implements IteratableType {
 
   getOperatorResultType(operator: Operator, otherType: Type | null): Type | null {
     const defaultResult = super.getOperatorResultType(operator, otherType);
-    if(defaultResult !== null) {
+    if (defaultResult !== null) {
       return defaultResult;
     }
     switch (operator) {

@@ -6,6 +6,7 @@ export enum OperatorType {
   InfixOperator,
   PostfixOperator,
 }
+
 export enum Operator {
   ADDITION = 0,
   SUBTRACTION = 1,
@@ -117,5 +118,32 @@ export class OperatorHelper {
       case Operator.LOGICAL_NOT:
         return OperatorType.PrefixOperator;
     }
+  }
+  static getAllOperators(): Operator[] {
+    return [
+      Operator.ADDITION,
+      Operator.SUBTRACTION,
+      Operator.UNARY_PLUS,
+      Operator.UNARY_MINUS,
+      Operator.MULTIPLICATION,
+      Operator.DIVISION,
+      Operator.MODULO,
+      Operator.EQUALS,
+      Operator.GREATER,
+      Operator.LESS,
+      Operator.LOGICAL_AND,
+      Operator.LOGICAL_OR,
+      Operator.DIRECT_ASSIGNMENT,
+      Operator.DIRECT_ASSIGNMENT_OLD_VAL,
+      Operator.MEMBER_ACCESS,
+      Operator.SCOPE_RESOLUTION,
+      Operator.LOGICAL_NOT,
+      Operator.LOGICAL_XOR,
+      Operator.INSTANCEOF,
+      Operator.NEW,
+      Operator.ARRAY_ACCESS,
+      Operator.CALL,
+      Operator.TYPE_CAST,
+    ];
   }
 }
