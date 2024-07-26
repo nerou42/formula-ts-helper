@@ -19,7 +19,7 @@ export class TypeType implements Type {
   }
 
   assignableBy(type: Type): boolean {
-    return this.equals(type);
+    return type instanceof TypeType;
   }
 
   equals(type: Type): boolean {
