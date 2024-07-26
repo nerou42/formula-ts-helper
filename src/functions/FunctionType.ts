@@ -4,7 +4,7 @@ import { Type } from "../Type";
 import { TypeProvider } from "../TypeProvider";
 import { OuterFunctionArgumentListType } from "./OuterFunctionArgumentListType";
 
-export type ReturnTypeCallback = ((outerFunctionArgumentListType: OuterFunctionArgumentListType) => null | Type);
+export type SpecificReturnType = ((outerFunctionArgumentListType: OuterFunctionArgumentListType) => null | Type);
 
 /**
  * @author Timo Lehnertz
@@ -15,9 +15,9 @@ export class FunctionType implements Type {
 
   public readonly generalReturnType: Type;
 
-  private readonly specificReturnType: ReturnTypeCallback | null;
+  private readonly specificReturnType: SpecificReturnType | null;
 
-  constructor(outerArguments: OuterFunctionArgumentListType, generalReturnType: Type, specificReturnType: ReturnTypeCallback | null = null) {
+  constructor(outerArguments: OuterFunctionArgumentListType, generalReturnType: Type, specificReturnType: SpecificReturnType | null = null) {
     this.arguments = outerArguments;
     this.generalReturnType = generalReturnType;
     this.specificReturnType = specificReturnType;

@@ -20,7 +20,7 @@ import { ClassType } from "./classes/ClassType";
 import { ClassTypeType } from "./classes/ClassTypeType";
 import { ConstructorType } from "./classes/ConstructorType";
 import { FieldType } from "./classes/FieldType";
-import { FunctionType } from "./functions/FunctionType";
+import { FunctionType, SpecificReturnType } from "./functions/FunctionType";
 import { OuterFunctionArgument } from "./functions/OuterFunctionArgument";
 import { OuterFunctionArgumentListType } from "./functions/OuterFunctionArgumentListType";
 
@@ -50,7 +50,8 @@ interface ClassTypeTypeDescription {
 interface FunctionTypeDescriptionAbstract {
   properties: {
     arguments: OuterFunctionArgumentListTypeDescription;
-    returnType: TypeDescription;
+    generalReturnType: TypeDescription;
+    specificReturnType: string | null;
   }
 }
 
@@ -160,6 +161,40 @@ interface VoidTypeDescription {
   typeName: 'VoidType';
 }
 
+function parseSpecificReturnType(specificReturnType: string | null): SpecificReturnType | null | undefined {
+  if (specificReturnType === null) {
+    return null;
+  }
+  switch (specificReturnType) {
+    case 'FORMULA_REDUCE':
+    case 'FORMULA_ARRAY_FILTER':
+      return (args: OuterFunctionArgumentListType) => args.getArgumentType(0);
+    case 'FORMULA_FIRST_OR_NULL':
+      return (args: OuterFunctionArgumentListType) => {
+        const type = args.getArgumentType(0);
+        if (type instanceof ArrayType) {
+          if (type.getElementsType() instanceof NeverType) {
+            return new NullType();
+          }
+          return CompoundType.buildFromTypes([new NullType(), type.getElementsType()]);
+        } else {
+          throw new Error('Invalid type ' + type);
+        }
+      }
+    case 'FORMULA_EARLY_RETURN_IF_NULL':
+      return (args: OuterFunctionArgumentListType) => {
+        const type = args.getArgumentType(0);
+        if (type instanceof CompoundType) {
+          return type.eliminateType(new NullType());
+        } else if (type instanceof NullType) {
+          return new NeverType();
+        } else {
+          return type;
+        }
+      }
+    default: return undefined;
+  }
+}
 
 function parseClassType(genericTypeParser: GenericTypeParser, typeDescription: ClassTypeDescription): ClassType {
   const parentType = typeDescription.properties.parentType !== null ? parseClassType(genericTypeParser, typeDescription.properties.parentType) : null;
@@ -189,13 +224,18 @@ function parseOuterArgumentsType(genericTypeParser: GenericTypeParser, typeDescr
   return new OuterFunctionArgumentListType(outerArguments, typeDescription.properties.varg);
 }
 
-function parseFunctionType(genericTypeParser: GenericTypeParser, typeDescription: ConstructorTypeDescription | FunctionTypeDescription): FunctionType | ConstructorType {
+function parseConstructorType(genericTypeParser: GenericTypeParser, typeDescription: ConstructorTypeDescription): ConstructorType {
   const outerArguments = parseOuterArgumentsType(genericTypeParser, typeDescription.properties.arguments);
-  if (typeDescription.typeName === 'ConstructorType') {
-    return new ConstructorType(outerArguments, parseClassType(genericTypeParser, typeDescription.properties.returnType as ClassTypeDescription));
-  } else {
-    return new FunctionType(outerArguments, genericTypeParser.parseType(typeDescription.properties.returnType));
+  return new ConstructorType(outerArguments, parseClassType(genericTypeParser, typeDescription.properties.generalReturnType as ClassTypeDescription));
+}
+
+function parseFunctionType(genericTypeParser: GenericTypeParser, typeDescription: FunctionTypeDescription): FunctionType | undefined {
+  const outerArguments = parseOuterArgumentsType(genericTypeParser, typeDescription.properties.arguments);
+  const specificReturnType = parseSpecificReturnType(typeDescription.properties.specificReturnType);
+  if (specificReturnType === undefined) {
+    return undefined;
   }
+  return new FunctionType(outerArguments, genericTypeParser.parseType(typeDescription.properties.generalReturnType), specificReturnType);
 }
 
 function parseEnumTypeType(genericTypeParser: GenericTypeParser, typeDescription: EnumTypeTypeDescription): EnumTypeType {
@@ -217,10 +257,11 @@ export const parseInbuiltTypes: SpecificTypeParser = ((parser: GenericTypeParser
     case 'ClassType':
       return parseClassType(parser, type);
     case 'ClassTypeType':
-      return new ClassTypeType(parseFunctionType(parser, type.properties.constructorType));
+      return new ClassTypeType(parseConstructorType(parser, type.properties.constructorType));
     case 'CompoundType':
       return parseCompoundType(parser, type);
     case 'ConstructorType':
+      return parseConstructorType(parser, type);
     case 'FunctionType':
       return parseFunctionType(parser, type);
     case 'DateIntervalType':

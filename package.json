@@ -1,6 +1,6 @@
 {
   "name": "formula-ts-helper",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "description": "A ts library that implements the type system of formula",
   "main": "./dist/index.cjs",
   "types": "./dist/index.d.cts",

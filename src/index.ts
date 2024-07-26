@@ -2,7 +2,7 @@ export { ClassType } from "./classes/ClassType";
 export { ClassTypeType } from "./classes/ClassTypeType";
 export { ConstructorType } from "./classes/ConstructorType";
 export { FieldType } from "./classes/FieldType";
-export { FunctionType, ReturnTypeCallback } from "./functions/FunctionType";
+export { FunctionType, SpecificReturnType as ReturnTypeCallback } from "./functions/FunctionType";
 export { InnerFunctionArgument } from "./functions/InnerFunctionArgument";
 export { OuterFunctionArgument } from "./functions/OuterFunctionArgument";
 export { OuterFunctionArgumentListType } from "./functions/OuterFunctionArgumentListType";
