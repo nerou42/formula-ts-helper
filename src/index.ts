@@ -23,5 +23,5 @@ export { StringType } from "./StringType";
 export { Type } from "./Type";
 export { TypeType } from "./TypeType";
 export { VoidType } from "./VoidType";
-export { GenericTypeParser, TypeDescription, SpecificTypeParser } from "./GenericTypeParser";
+export { GenericTypeParser, TypeDescription, SpecificTypeParser, SpecificReturnTypeParser } from "./GenericTypeParser";
 export { OperatorParser } from "./OperatorParser";

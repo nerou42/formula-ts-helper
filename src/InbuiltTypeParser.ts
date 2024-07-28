@@ -6,7 +6,7 @@ import { DateTimeImmutableType } from "./DateTimeImmutableType";
 import { EnumInstanceType } from "./EnumInstanceType";
 import { EnumTypeType } from "./EnumTypeType";
 import { FloatType } from "./FloatType";
-import { GenericTypeParser, SpecificTypeParser, TypeDescription } from "./GenericTypeParser";
+import { GenericTypeParser, SpecificReturnTypeParser, SpecificTypeParser, TypeDescription } from "./GenericTypeParser";
 import { IntegerType } from "./IntegerType";
 import { MemberAccsessType } from "./MemberAccsessType";
 import { MixedType } from "./MixedType";
@@ -161,10 +161,7 @@ interface VoidTypeDescription {
   typeName: 'VoidType';
 }
 
-function parseSpecificReturnType(specificReturnType: string | null): SpecificReturnType | null | undefined {
-  if (specificReturnType === null) {
-    return null;
-  }
+export function parseInbuildSpecificReturnType(specificReturnType: string): SpecificReturnType | undefined {
   switch (specificReturnType) {
     case 'FORMULA_REDUCE':
     case 'FORMULA_ARRAY_FILTER':
@@ -229,11 +226,14 @@ function parseConstructorType(genericTypeParser: GenericTypeParser, typeDescript
   return new ConstructorType(outerArguments, parseClassType(genericTypeParser, typeDescription.properties.generalReturnType as ClassTypeDescription));
 }
 
-function parseFunctionType(genericTypeParser: GenericTypeParser, typeDescription: FunctionTypeDescription): FunctionType | undefined {
+function parseFunctionType(genericTypeParser: GenericTypeParser, typeDescription: FunctionTypeDescription, specificReturnTypeParser: SpecificReturnTypeParser): FunctionType | undefined {
   const outerArguments = parseOuterArgumentsType(genericTypeParser, typeDescription.properties.arguments);
-  const specificReturnType = parseSpecificReturnType(typeDescription.properties.specificReturnType);
-  if (specificReturnType === undefined) {
-    return undefined;
+  let specificReturnType = null;
+  if(typeDescription.properties.specificReturnType !== null) {
+    specificReturnType = specificReturnTypeParser(typeDescription.properties.specificReturnType);
+    if (specificReturnType === undefined) {
+      return undefined;
+    }
   }
   return new FunctionType(outerArguments, genericTypeParser.parseType(typeDescription.properties.generalReturnType), specificReturnType);
 }
@@ -248,7 +248,7 @@ function parseEnumTypeType(genericTypeParser: GenericTypeParser, typeDescription
 
 type InbuiltTypeDescription = ClassTypeDescription | ClassTypeTypeDescription | ConstructorTypeDescription | FunctionTypeDescription | OuterFunctionArgumentListTypeDescription | ArrayTypeDescription | BooleanTypeDescription | CompoundTypeDescription | DateIntervalTypeDescription | DateTimeImmutableTypeDescription | EnumInstanceTypeDescription | EnumTypeTypeDescription | FloatTypeDescription | IntegerTypeDescription | MemberAccsessTypeDescription | MixedTypeDescription | NeverTypeDescription | NullTypeDescription | StringTypeDescription | TypeTypeDescription | VoidTypeDescription;
 
-export const parseInbuiltTypes: SpecificTypeParser = ((parser: GenericTypeParser, type: InbuiltTypeDescription): Type | undefined => {
+export const parseInbuiltTypes: SpecificTypeParser = ((parser: GenericTypeParser, type: InbuiltTypeDescription, specificReturnTypeParser: SpecificReturnTypeParser): Type | undefined => {
   switch (type.typeName) {
     case 'ArrayType':
       return new ArrayType(parser.parseType(type.properties.keyType), parser.parseType(type.properties.elementsType));
@@ -263,7 +263,7 @@ export const parseInbuiltTypes: SpecificTypeParser = ((parser: GenericTypeParser
     case 'ConstructorType':
       return parseConstructorType(parser, type);
     case 'FunctionType':
-      return parseFunctionType(parser, type);
+      return parseFunctionType(parser, type, specificReturnTypeParser);
     case 'DateIntervalType':
       return new DateIntervalType();
     case 'DateTimeImmutableType':
