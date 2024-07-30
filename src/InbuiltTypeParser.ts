@@ -24,7 +24,7 @@ import { FunctionType, SpecificReturnType } from "./functions/FunctionType";
 import { OuterFunctionArgument } from "./functions/OuterFunctionArgument";
 import { OuterFunctionArgumentListType } from "./functions/OuterFunctionArgumentListType";
 
-interface ClassTypeDescriptionAbstract {
+export interface ClassTypeDescriptionAbstract {
   properties: {
     parentType: ClassTypeDescription | null;
     identifier: string;
@@ -36,18 +36,18 @@ interface ClassTypeDescriptionAbstract {
   }
 }
 
-interface ClassTypeDescription extends ClassTypeDescriptionAbstract {
+export interface ClassTypeDescription extends ClassTypeDescriptionAbstract {
   typeName: 'ClassType';
 }
 
-interface ClassTypeTypeDescription {
+export interface ClassTypeTypeDescription {
   typeName: 'ClassTypeType';
   properties: {
     constructorType: ConstructorTypeDescription;
   }
 }
 
-interface FunctionTypeDescriptionAbstract {
+export interface FunctionTypeDescriptionAbstract {
   properties: {
     arguments: OuterFunctionArgumentListTypeDescription;
     generalReturnType: TypeDescription;
@@ -55,16 +55,16 @@ interface FunctionTypeDescriptionAbstract {
   }
 }
 
-interface ConstructorTypeDescription extends FunctionTypeDescriptionAbstract {
+export interface ConstructorTypeDescription extends FunctionTypeDescriptionAbstract {
   typeName: 'ConstructorType';
 }
 
 
-interface FunctionTypeDescription extends FunctionTypeDescriptionAbstract {
+export interface FunctionTypeDescription extends FunctionTypeDescriptionAbstract {
   typeName: 'FunctionType';
 }
 
-interface OuterFunctionArgumentListTypeDescription {
+export interface OuterFunctionArgumentListTypeDescription {
   typeName: 'OuterFunctionArgumentListType';
   properties: {
     varg: boolean;
@@ -76,7 +76,7 @@ interface OuterFunctionArgumentListTypeDescription {
   }
 }
 
-interface ArrayTypeDescription {
+export interface ArrayTypeDescription {
   typeName: 'ArrayType';
   properties: {
     keyType: TypeDescription;
@@ -85,7 +85,7 @@ interface ArrayTypeDescription {
 }
 
 
-interface BooleanTypeDescription {
+export interface BooleanTypeDescription {
   typeName: 'BooleanType';
   properties: {
     keyType: TypeDescription;
@@ -93,71 +93,71 @@ interface BooleanTypeDescription {
   }
 }
 
-interface CompoundTypeDescription {
+export interface CompoundTypeDescription {
   typeName: 'CompoundType';
   properties: {
     types: TypeDescription[];
   }
 }
 
-interface DateIntervalTypeDescription {
+export interface DateIntervalTypeDescription {
   typeName: 'DateIntervalType';
 }
 
-interface DateTimeImmutableTypeDescription {
+export interface DateTimeImmutableTypeDescription {
   typeName: 'DateTimeImmutableType';
 }
 
-interface EnumInstanceTypeDescription {
+export interface EnumInstanceTypeDescription {
   typeName: 'EnumInstanceType';
   properties: {
     enumType: EnumTypeTypeDescription;
   }
 }
 
-interface EnumTypeTypeDescription extends ClassTypeDescriptionAbstract {
+export interface EnumTypeTypeDescription extends ClassTypeDescriptionAbstract {
   typeName: 'EnumTypeType';
 }
 
-interface FloatTypeDescription {
+export interface FloatTypeDescription {
   typeName: 'FloatType';
 }
 
-interface IntegerTypeDescription {
+export interface IntegerTypeDescription {
   typeName: 'IntegerType';
 }
 
-interface MemberAccsessTypeDescription {
+export interface MemberAccsessTypeDescription {
   typeName: 'MemberAccsessType';
   properties: {
     memberIdentifier: string;
   }
 }
 
-interface MixedTypeDescription {
+export interface MixedTypeDescription {
   typeName: 'MixedType';
 }
 
-interface NeverTypeDescription {
+export interface NeverTypeDescription {
   typeName: 'NeverType';
 }
 
-interface NullTypeDescription {
+export interface NullTypeDescription {
   typeName: 'NullType';
 }
 
-interface StringTypeDescription {
+export interface StringTypeDescription {
   typeName: 'StringType';
 }
 
-interface TypeTypeDescription {
+export interface TypeTypeDescription {
   typeName: 'TypeType';
   properties: {
     type: TypeDescription;
   }
 }
 
-interface VoidTypeDescription {
+export interface VoidTypeDescription {
   typeName: 'VoidType';
 }
 
@@ -189,7 +189,8 @@ export function parseInbuildSpecificReturnType(specificReturnType: string): Spec
           return type;
         }
       }
-    default: return undefined;
+    default:
+      return undefined;
   }
 }
 

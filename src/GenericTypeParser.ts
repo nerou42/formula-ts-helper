@@ -35,7 +35,7 @@ export class GenericTypeParser {
     );
   }
 
-  parseSpecificReturnType(identifier: string): SpecificReturnType | undefined {
+  private parseSpecificReturnType(identifier: string): SpecificReturnType | undefined {
     for (const parser of this.specificReturnTypeParsers) {
       const result = parser(identifier);
       if (result) {

@@ -1,7 +1,7 @@
+import { NullType } from "./NullType";
 import { Operator } from "./Operator";
 import { Type } from "./Type";
 import { TypeProviderInterface } from "./TypeProviderInterface";
-
 
 export function getDefaultImplementedOperators(): Operator[] {
   return [
@@ -16,14 +16,16 @@ export function getDefaultImplementedOperators(): Operator[] {
   ];
 }
 
-
 export function getDefaultCompatibleOperands(typeProvider: TypeProviderInterface, self: Type, operator: Operator): Type[] {
   const compatible: Type[] = [];
   switch (operator) {
     case Operator.DIRECT_ASSIGNMENT:
     case Operator.DIRECT_ASSIGNMENT_OLD_VAL:
+      compatible.push(self);
+      break;
     case Operator.EQUALS:
       compatible.push(self);
+      compatible.push(new NullType());
       break;
     case Operator.TYPE_CAST:
       compatible.push(typeProvider.buildTypeType(typeProvider.buildBooleanType()));
@@ -50,7 +52,7 @@ export function getDefaultOperatorResultType(typeProvider: TypeProviderInterface
       }
       break;
     case Operator.EQUALS:
-      if (otherType === null || !self.assignableBy(otherType)) {
+      if (otherType === null || (!self.assignableBy(otherType) && !(otherType instanceof NullType))) {
         break;
       }
       return typeProvider.buildBooleanType();

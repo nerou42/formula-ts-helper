@@ -350,7 +350,10 @@ function addDefaultOperators(typeDescription: TypeDescription): void {
       compatibleTypes: [{ operandType: null, resultType: new BooleanType() }],
     }, {
       operator: Operator.EQUALS,
-      compatibleTypes: [{ operandType: typeDescription.type, resultType: new BooleanType() }],
+      compatibleTypes: [
+        { operandType: typeDescription.type, resultType: new BooleanType() },
+        { operandType: new NullType(), resultType: new BooleanType() }
+      ],
       forbiddenType: typeDescription.type instanceof MixedType ? null : undefined,
     }
   ]);
@@ -410,7 +413,7 @@ function testType(typeDescription: TypeDescription): void {
     // console.log(compatible);
     // console.log(getCompatibleByOperatorDescription(operatorDescription));
     // console.log(operatorDescription);
-    expect(compatible).toEqual(getCompatibleByOperatorDescription(operatorDescription));
+    expect(compatible.sort()).toEqual(getCompatibleByOperatorDescription(operatorDescription).sort());
     if (operatorDescription.forbiddenType !== null) {
       // if (typeDescription.type.getOperatorResultType(operatorDescription.operator, operatorDescription.forbiddenType !== undefined ? operatorDescription.forbiddenType : invalidType) !== null) {
       // console.log(typeDescription.type);
