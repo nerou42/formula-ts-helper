@@ -17,7 +17,7 @@ export class BooleanType implements Type {
   }
 
   getImplementedOperators(): Operator[] {
-    return getDefaultImplementedOperators().concat([Operator.LOGICAL_NOT]);
+    return getDefaultImplementedOperators();
   }
 
   getCompatibleOperands(operator: Operator): Type[] {

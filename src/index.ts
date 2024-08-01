@@ -25,3 +25,6 @@ export { TypeType } from "./TypeType";
 export { VoidType } from "./VoidType";
 export { GenericTypeParser, TypeDescription, SpecificTypeParser, SpecificReturnTypeParser } from "./GenericTypeParser";
 export { OperatorParser } from "./OperatorParser";
+export { TypeProviderInterface } from "./TypeProviderInterface";
+export { TypeProvider } from "./TypeProvider";
+export { getDefaultCompatibleOperands, getDefaultImplementedOperators, getDefaultOperatorResultType } from "./BaseType";
