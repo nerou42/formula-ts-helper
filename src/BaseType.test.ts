@@ -129,7 +129,26 @@ const typeDescriptions: TypeDescription[] = [
       ]
     }]
   },
-  { type: new DateIntervalType() },
+  {
+    type: new DateIntervalType(),
+    excludeTypeCasts: true,
+    operatorDescriptions: [
+      {
+        operator: Operator.TYPE_CAST,
+        compatibleTypes: [
+          { operandType: new TypeType(new BooleanType()), resultType: new BooleanType() },
+          { operandType: new TypeType(new StringType()), resultType: new StringType() },
+          { operandType: new TypeType(new IntegerType()), resultType: new IntegerType() },
+        ]
+      }, {
+        operator: Operator.UNARY_PLUS,
+        compatibleTypes: [{ operandType: null, resultType: new DateIntervalType() }]
+      }, {
+        operator: Operator.UNARY_MINUS,
+        compatibleTypes: [{ operandType: null, resultType: new DateIntervalType() }]
+      }
+    ]
+  },
   {
     type: new DateTimeImmutableType(),
     operatorDescriptions: [
@@ -298,7 +317,7 @@ const typeDescriptions: TypeDescription[] = [
           operandType: new StringType(),
           resultType: new StringType(),
         }]
-      },{
+      }, {
         operator: Operator.MEMBER_ACCESS,
         compatibleTypes: [{
           operandType: new MemberAccsessType('length'),
@@ -389,7 +408,7 @@ function compareImplementedOperators(expected: Operator[], actual: Operator[]): 
 
 function testType(typeDescription: TypeDescription): void {
   expect(typeDescription.type.equals(typeDescription.equalType ?? typeDescription.type)).toBeTruthy();
-  if(Array.isArray(typeDescription.notEqualType)) {
+  if (Array.isArray(typeDescription.notEqualType)) {
     for (const notEqualType of typeDescription.notEqualType) {
       expect(typeDescription.type.equals(notEqualType)).toBeFalsy();
     }
@@ -465,7 +484,7 @@ interface TypeDescription {
   type: Type;
   operatorDescriptions?: OperatorDescription[];
   equalType?: Type;
-  notEqualType?: Type|Type[];
+  notEqualType?: Type | Type[];
   assignableType?: Type;
   notAssignableType?: Type | null;
   excludeTypeCasts?: boolean;
