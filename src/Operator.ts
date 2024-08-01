@@ -37,6 +37,57 @@ export class OperatorHelper {
 
   public constructor(public readonly operatorType: Operator) { }
 
+  getDescription(): string {
+    switch (this.operatorType) {
+      case Operator.SCOPE_RESOLUTION:
+        return 'Scope resolution';
+      case Operator.MEMBER_ACCESS:
+        return 'Member accsess';
+      case Operator.UNARY_PLUS:
+        return 'Unary plus';
+      case Operator.UNARY_MINUS:
+        return 'Unary minus';
+      case Operator.LOGICAL_NOT:
+        return 'Not';
+      case Operator.NEW:
+        return 'new';
+      case Operator.INSTANCEOF:
+        return 'instanceof';
+      case Operator.MULTIPLICATION:
+        return 'Multiplication';
+      case Operator.DIVISION:
+        return 'Division';
+      case Operator.MODULO:
+        return 'Modulo';
+      case Operator.ADDITION:
+        return 'Addition';
+      case Operator.SUBTRACTION:
+        return 'Subtraction';
+      case Operator.GREATER:
+        return 'Greater';
+      case Operator.LESS:
+        return 'Less';
+      case Operator.EQUALS:
+        return 'Less equals';
+      case Operator.LOGICAL_AND:
+        return 'Logical and';
+      case Operator.LOGICAL_XOR:
+        return 'Logical or';
+      case Operator.DIRECT_ASSIGNMENT:
+        return 'Assignment';
+      case Operator.DIRECT_ASSIGNMENT_OLD_VAL:
+        return 'Assignment (old value)';
+      case Operator.TYPE_CAST:
+        return 'Typecast';
+      case Operator.ARRAY_ACCESS:
+        return 'Array accsess';
+      case Operator.CALL:
+        return 'Functioncall';
+      case Operator.LOGICAL_OR:
+        return 'Logical or';
+    }
+  }
+
   toString(leftExpression: null|string, rightExpression: null|string): string {
     leftExpression ??= '';
     rightExpression ??= '';
@@ -48,11 +99,11 @@ export class OperatorHelper {
       case Operator.UNARY_PLUS:
         return leftExpression + '+' + rightExpression;
       case Operator.UNARY_MINUS:
-        return leftExpression + '-' + rightExpression;
+        return  '-' + leftExpression;
       case Operator.LOGICAL_NOT:
-        return leftExpression + '!' + rightExpression;
+        return '!' + leftExpression;
       case Operator.NEW:
-        return leftExpression + 'new ' + rightExpression;
+        return 'new ' + leftExpression;
       case Operator.INSTANCEOF:
         return leftExpression + ' instanceof ' + rightExpression;
       case Operator.MULTIPLICATION:
@@ -82,7 +133,7 @@ export class OperatorHelper {
       case Operator.DIRECT_ASSIGNMENT_OLD_VAL:
         return leftExpression + '=' + rightExpression;
       case Operator.TYPE_CAST:
-        return leftExpression + '(' + rightExpression + ')';
+        return '(' + rightExpression + ')' + leftExpression;
       case Operator.ARRAY_ACCESS:
         return leftExpression + '[' + rightExpression + ']';
       case Operator.CALL:
