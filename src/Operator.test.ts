@@ -22,7 +22,7 @@ function stringifyOperator(operator: Operator) {
     case Operator.SCOPE_RESOLUTION:
       return '::';
     case Operator.MEMBER_ACCESS:
-      return '+';
+      return '.';
     case Operator.UNARY_PLUS:
       return '+';
     case Operator.UNARY_MINUS:

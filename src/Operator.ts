@@ -44,7 +44,7 @@ export class OperatorHelper {
       case Operator.SCOPE_RESOLUTION:
         return leftExpression + '::' + rightExpression;
       case Operator.MEMBER_ACCESS:
-        return leftExpression + '+' + rightExpression;
+        return leftExpression + '.' + rightExpression;
       case Operator.UNARY_PLUS:
         return leftExpression + '+' + rightExpression;
       case Operator.UNARY_MINUS:
