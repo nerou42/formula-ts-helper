@@ -32,7 +32,7 @@ export class OuterFunctionArgument {
       str += '...';
     }
     if (this.name !== null) {
-      str += ' ' + this.name;
+      str += ' ' + (this.optional && !this.varg ? '?' : '') + this.name;
     }
     return str;
   }
