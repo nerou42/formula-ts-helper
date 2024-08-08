@@ -30,10 +30,10 @@ describe('OuterFunctionArgumentListType', () => {
     expect(new OuterFunctionArgumentListType([new OuterFunctionArgument(new IntegerType(), false, false, 'i')], false).getMinArgumentCount()).toBe(1);
   });
 
-  test('getArgumentType', () => {
-    expect(new OuterFunctionArgumentListType([new OuterFunctionArgument(new IntegerType(), true, true, 'i')], true).getArgumentType(0)).toBeInstanceOf(IntegerType);
-    expect(new OuterFunctionArgumentListType([new OuterFunctionArgument(new IntegerType(), true, true, 'i')], true).getArgumentType(10)).toBeInstanceOf(IntegerType);
-    expect(new OuterFunctionArgumentListType([new OuterFunctionArgument(new IntegerType(), false, false, 'i')], false).getArgumentType(10)).toBeNull();
+  test('getArgument', () => {
+    expect(new OuterFunctionArgumentListType([new OuterFunctionArgument(new IntegerType(), true, true, 'i')], true).getArgument(0).type).toBeInstanceOf(IntegerType);
+    expect(new OuterFunctionArgumentListType([new OuterFunctionArgument(new IntegerType(), true, true, 'i')], true).getArgument(10).type).toBeInstanceOf(IntegerType);
+    expect(() => new OuterFunctionArgumentListType([new OuterFunctionArgument(new IntegerType(), false, false, 'i')], false).getArgument(10).type).toThrow('Index out of bounds');
   });
 
   describe('assignableBy', () => {

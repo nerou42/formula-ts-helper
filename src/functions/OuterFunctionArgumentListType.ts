@@ -58,13 +58,13 @@ export class OuterFunctionArgumentListType implements Type {
     return count;
   }
 
-  getArgumentType(index: number): Type | null {
+  getArgument(index: number): OuterFunctionArgument {
     if (this.arguments[index] !== undefined) {
-      return this.arguments[index].type;
+      return this.arguments[index];
     } else if (this.isVArgs) {
-      return this.arguments[this.arguments.length - 1].type;
+      return this.arguments[this.arguments.length - 1];
     } else {
-      return null;
+      throw new Error('Index out of bounds');
     }
   }
 
@@ -79,8 +79,8 @@ export class OuterFunctionArgumentListType implements Type {
     // check invalid types
     for (let i = 0; i < type.arguments.length; i++) {
       const sourceType = type.arguments[i].type;
-      const targetType = this.getArgumentType(i);
-      if (!targetType!.assignableBy(sourceType)) {
+      const targetType = this.getArgument(i);
+      if (!targetType!.type.assignableBy(sourceType)) {
         return false;
       }
     }

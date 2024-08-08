@@ -165,10 +165,10 @@ export function parseInbuildSpecificReturnType(specificReturnType: string): Spec
   switch (specificReturnType) {
     case 'FORMULA_REDUCE':
     case 'FORMULA_ARRAY_FILTER':
-      return (args: OuterFunctionArgumentListType) => args.getArgumentType(0);
+      return (args: OuterFunctionArgumentListType) => args.getArgument(0)!.type;
     case 'FORMULA_FIRST_OR_NULL':
       return (args: OuterFunctionArgumentListType) => {
-        const type = args.getArgumentType(0);
+        const type = args.getArgument(0).type;
         if (type instanceof ArrayType) {
           if (type.getElementsType() instanceof NeverType) {
             return new NullType();
@@ -180,7 +180,7 @@ export function parseInbuildSpecificReturnType(specificReturnType: string): Spec
       }
     case 'FORMULA_EARLY_RETURN_IF_NULL':
       return (args: OuterFunctionArgumentListType) => {
-        const type = args.getArgumentType(0);
+        const type = args.getArgument(0).type;
         if (type instanceof CompoundType) {
           return type.eliminateType(new NullType());
         } else if (type instanceof NullType) {
