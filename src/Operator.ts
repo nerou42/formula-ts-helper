@@ -97,7 +97,7 @@ export class OperatorHelper {
       case Operator.MEMBER_ACCESS:
         return leftExpression + '.' + rightExpression;
       case Operator.UNARY_PLUS:
-        return '-' + leftExpression;
+        return '+' + leftExpression;
       case Operator.UNARY_MINUS:
         return  '-' + leftExpression;
       case Operator.LOGICAL_NOT:
