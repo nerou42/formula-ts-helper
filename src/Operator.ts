@@ -68,7 +68,7 @@ export class OperatorHelper {
       case Operator.LESS:
         return 'Less';
       case Operator.EQUALS:
-        return 'Less equals';
+        return 'Equals';
       case Operator.LOGICAL_AND:
         return 'Logical and';
       case Operator.LOGICAL_XOR:
@@ -97,7 +97,7 @@ export class OperatorHelper {
       case Operator.MEMBER_ACCESS:
         return leftExpression + '.' + rightExpression;
       case Operator.UNARY_PLUS:
-        return leftExpression + '+' + rightExpression;
+        return '-' + leftExpression;
       case Operator.UNARY_MINUS:
         return  '-' + leftExpression;
       case Operator.LOGICAL_NOT:
