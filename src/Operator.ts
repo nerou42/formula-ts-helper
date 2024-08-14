@@ -42,7 +42,7 @@ export class OperatorHelper {
       case Operator.SCOPE_RESOLUTION:
         return 'Scope resolution';
       case Operator.MEMBER_ACCESS:
-        return 'Member accsess';
+        return 'Member access';
       case Operator.UNARY_PLUS:
         return 'Unary plus';
       case Operator.UNARY_MINUS:
