@@ -53,7 +53,11 @@ export class ArrayType extends ClassType implements IteratableType {
   }
 
   getImplementedOperators(): Operator[] {
-    return getDefaultImplementedOperators().concat([Operator.ARRAY_ACCESS, Operator.MEMBER_ACCESS, Operator.ADDITION, Operator.SUBTRACTION, Operator.MULTIPLICATION, Operator.DIVISION, Operator.UNARY_PLUS, Operator.UNARY_MINUS, Operator.MODULO, Operator.TYPE_CAST]);
+    let implemented = [Operator.ARRAY_ACCESS, Operator.MEMBER_ACCESS];
+    const passthroughOperators = [Operator.ADDITION, Operator.SUBTRACTION, Operator.MULTIPLICATION, Operator.DIVISION, Operator.UNARY_PLUS, Operator.UNARY_MINUS, Operator.MODULO, Operator.TYPE_CAST]
+    const elementsImplemented = this.elementsType.getImplementedOperators();
+    implemented = implemented.concat(passthroughOperators.filter(o => elementsImplemented.includes(o)));
+    return getDefaultImplementedOperators().concat(implemented);
   }
 
   getCompatibleOperands(operator: Operator): Type[] {
