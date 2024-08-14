@@ -115,7 +115,7 @@ export class CompoundType implements Type {
     let delimiter = '';
     for (const type of this.types) {
       identifier += delimiter + type.toString();
-      delimiter = '|';
+      delimiter = ' | ';
     }
     return identifier;
   }
