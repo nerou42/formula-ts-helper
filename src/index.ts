@@ -27,4 +27,6 @@ export { GenericTypeParser, TypeDescription, SpecificTypeParser, SpecificReturnT
 export { OperatorParser } from "./OperatorParser";
 export { TypeProviderInterface } from "./TypeProviderInterface";
 export { TypeProvider } from "./TypeProvider";
+export { EnumTypeType } from "./EnumTypeType";
+export { EnumInstanceType } from "./EnumInstanceType";
 export { getDefaultCompatibleOperands, getDefaultImplementedOperators, getDefaultOperatorResultType } from "./BaseType";
