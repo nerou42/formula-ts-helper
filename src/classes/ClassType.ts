@@ -10,11 +10,11 @@ import { FieldType } from "./FieldType";
  */
 export class ClassType implements Type {
 
-  protected readonly parentType: ClassType | null;
+  public readonly parentType: ClassType | null;
 
-  protected readonly identifier: string;
+  public readonly identifier: string;
 
-  protected readonly fields: Map<string, FieldType>;
+  public readonly fields: Map<string, FieldType>;
 
   constructor(parentType: ClassType | null, identifier: string, fields: Map<string, FieldType>) {
     this.parentType = parentType;

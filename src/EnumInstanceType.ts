@@ -9,7 +9,7 @@ import { TypeProvider } from "./TypeProvider";
  */
 export class EnumInstanceType implements Type {
 
-  private readonly enumType: EnumTypeType;
+  public readonly enumType: EnumTypeType;
 
   public constructor(enumType: EnumTypeType) {
     this.enumType = enumType;
