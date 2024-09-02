@@ -2,6 +2,7 @@ import { getDefaultCompatibleOperands, getDefaultImplementedOperators, getDefaul
 import { Operator } from "../Operator";
 import { Type } from "../Type";
 import { TypeProvider } from "../TypeProvider";
+import { TypeType } from "../TypeType";
 import { OuterFunctionArgument } from "./OuterFunctionArgument";
 
 /**
@@ -68,6 +69,19 @@ export class OuterFunctionArgumentListType implements Type {
     }
   }
 
+  private canCastTo(sourceType: Type, targetType: Type) {
+    if (targetType.assignableBy(sourceType)) {
+      return true;
+    }
+    const castableTypes = sourceType.getCompatibleOperands(Operator.TYPE_CAST) as TypeType[];
+    for (const castableType of castableTypes) {
+      if (targetType.assignableBy(castableType.getType())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   assignableBy(type: Type): boolean {
     if (!(type instanceof OuterFunctionArgumentListType)) {
       return false;
@@ -80,7 +94,7 @@ export class OuterFunctionArgumentListType implements Type {
     for (let i = 0; i < type.arguments.length; i++) {
       const sourceType = type.arguments[i].type;
       const targetType = this.getArgument(i);
-      if (!targetType!.type.assignableBy(sourceType)) {
+      if (!targetType.type.assignableBy(sourceType) && !this.canCastTo(sourceType, targetType.type)) {
         return false;
       }
     }

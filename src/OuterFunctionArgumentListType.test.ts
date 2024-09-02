@@ -1,3 +1,4 @@
+import { FloatType } from "./FloatType";
 import { IntegerType } from "./IntegerType";
 import { StringType } from "./StringType";
 import { OuterFunctionArgument } from "./functions/OuterFunctionArgument";
@@ -39,6 +40,12 @@ describe('OuterFunctionArgumentListType', () => {
   describe('assignableBy', () => {
     it('should be assignable', () => {
       const typeA = new OuterFunctionArgumentListType([new OuterFunctionArgument(new IntegerType(), false, false, 'i')], false);
+      const typeB = new OuterFunctionArgumentListType([new OuterFunctionArgument(new IntegerType(), false, false, 'i')], false);
+      expect(typeA.assignableBy(typeB)).toBeTruthy();
+    });
+
+    it('should be assignable with cast', () => {
+      const typeA = new OuterFunctionArgumentListType([new OuterFunctionArgument(new FloatType(), false, false, 'i')], false);
       const typeB = new OuterFunctionArgumentListType([new OuterFunctionArgument(new IntegerType(), false, false, 'i')], false);
       expect(typeA.assignableBy(typeB)).toBeTruthy();
     });
