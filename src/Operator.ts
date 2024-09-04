@@ -72,7 +72,7 @@ export class OperatorHelper {
       case Operator.LOGICAL_AND:
         return 'Logical and';
       case Operator.LOGICAL_XOR:
-        return 'Logical or';
+        return 'Logical xor';
       case Operator.DIRECT_ASSIGNMENT:
         return 'Assignment';
       case Operator.DIRECT_ASSIGNMENT_OLD_VAL:
