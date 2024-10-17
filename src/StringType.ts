@@ -4,8 +4,6 @@ import { MemberAccsessType } from "./MemberAccsessType";
 import { Operator } from "./Operator";
 import { Type } from "./Type";
 import { TypeProvider } from "./TypeProvider";
-import { ClassType } from "./classes/ClassType";
-import { FieldType } from "./classes/FieldType";
 
 /**
  * @author Timo Lehnertz
