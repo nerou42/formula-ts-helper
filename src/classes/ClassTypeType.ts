@@ -1,4 +1,5 @@
 import { getDefaultCompatibleOperands, getDefaultImplementedOperators, getDefaultOperatorResultType } from "../BaseType";
+import { ClassTypeTypeDescription } from "../InbuiltTypeParser";
 import { Operator } from "../Operator";
 import { Type } from "../Type";
 import { TypeProvider } from "../TypeProvider";
@@ -47,5 +48,14 @@ export class ClassTypeType implements Type {
       return this.constructorType;
     }
     return null;
+  }
+
+  getInterfaceType(): ClassTypeTypeDescription {
+    return  {
+      typeName: "ClassTypeType",
+      properties: {
+        constructorType: this.constructorType.getInterfaceType()
+      }
+    }
   }
 }

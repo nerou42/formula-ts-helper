@@ -1,4 +1,5 @@
 import { getDefaultCompatibleOperands, getDefaultImplementedOperators, getDefaultOperatorResultType } from "./BaseType";
+import { MixedTypeDescription } from "./InbuiltTypeParser";
 import { Operator } from "./Operator";
 import { Type } from "./Type";
 import { TypeProvider } from "./TypeProvider";
@@ -30,5 +31,11 @@ export class MixedType implements Type {
 
   toString(): string {
     return 'mixed';
+  }
+
+  getInterfaceType(): MixedTypeDescription {
+    return {
+      typeName: 'MixedType',
+    }
   }
 }

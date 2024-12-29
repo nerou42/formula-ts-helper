@@ -1,3 +1,4 @@
+import { IntegerTypeDescription } from "./InbuiltTypeParser";
 import { NumberValueHelper } from "./NumberValueHelper";
 import { Operator } from "./Operator";
 import { Type } from "./Type";
@@ -29,5 +30,11 @@ export class IntegerType implements Type {
 
   toString(): string {
     return 'int';
+  }
+
+  getInterfaceType(): IntegerTypeDescription {
+    return {
+      typeName: 'IntegerType',
+    }
   }
 }

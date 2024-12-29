@@ -1,4 +1,5 @@
 import { getDefaultCompatibleOperands, getDefaultImplementedOperators, getDefaultOperatorResultType } from "./BaseType";
+import { TypeTypeDescription } from "./InbuiltTypeParser";
 import { Operator } from "./Operator";
 import { Type } from "./Type";
 import { TypeProvider } from "./TypeProvider";
@@ -40,5 +41,14 @@ export class TypeType implements Type {
 
   toString(): string {
     return 'TypeType(' + this.type.toString() + ')';
+  }
+
+  getInterfaceType(): TypeTypeDescription {
+    return {
+      typeName: 'TypeType',
+      properties: {
+        type: this.type.getInterfaceType()
+      }
+    }
   }
 }

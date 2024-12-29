@@ -1,5 +1,6 @@
 import { getDefaultCompatibleOperands, getDefaultImplementedOperators, getDefaultOperatorResultType } from "./BaseType";
 import { DateIntervalType } from "./DateIntervalType";
+import { DateTimeImmutableTypeDescription } from "./InbuiltTypeParser";
 import { Operator } from "./Operator";
 import { Type } from "./Type";
 import { TypeProvider } from "./TypeProvider";
@@ -50,5 +51,11 @@ export class DateTimeImmutableType implements Type {
 
   toString(): string {
     return 'DateTimeImmutable';
+  }
+
+  getInterfaceType(): DateTimeImmutableTypeDescription {
+    return {
+      typeName: 'DateTimeImmutableType',
+    }
   }
 }

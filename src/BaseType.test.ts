@@ -394,6 +394,7 @@ const invalidType: Type = {
   getImplementedOperators: () => [],
   getCompatibleOperands: (operator) => [],
   getOperatorResultType: (operator, otherType) => null,
+  getInterfaceType: () => ({ typeName: 'invalid' })
 }
 
 function compareImplementedOperators(expected: Operator[], actual: Operator[]): void {

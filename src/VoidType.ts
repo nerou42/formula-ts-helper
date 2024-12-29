@@ -1,4 +1,5 @@
 import { getDefaultCompatibleOperands, getDefaultImplementedOperators, getDefaultOperatorResultType } from "./BaseType";
+import { VoidTypeDescription } from "./InbuiltTypeParser";
 import { Operator } from "./Operator";
 import { Type } from "./Type";
 import { TypeProvider } from "./TypeProvider";
@@ -34,5 +35,11 @@ export class VoidType implements Type {
 
   toString(): string {
     return 'void';
+  }
+
+  getInterfaceType(): VoidTypeDescription {
+    return {
+      typeName: 'VoidType',
+    }
   }
 }

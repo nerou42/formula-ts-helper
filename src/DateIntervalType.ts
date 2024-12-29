@@ -1,4 +1,5 @@
 import { getDefaultCompatibleOperands, getDefaultImplementedOperators, getDefaultOperatorResultType } from "./BaseType";
+import { DateIntervalTypeDescription } from "./InbuiltTypeParser";
 import { IntegerType } from "./IntegerType";
 import { Operator } from "./Operator";
 import { Type } from "./Type";
@@ -56,5 +57,11 @@ export class DateIntervalType implements Type {
 
   toString(): string {
     return 'DateInterval';
+  }
+
+  getInterfaceType(): DateIntervalTypeDescription {
+    return {
+      typeName: 'DateIntervalType',
+    }
   }
 }

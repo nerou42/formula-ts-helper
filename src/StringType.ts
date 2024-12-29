@@ -1,4 +1,5 @@
 import { getDefaultCompatibleOperands, getDefaultImplementedOperators, getDefaultOperatorResultType } from "./BaseType";
+import { StringTypeDescription } from "./InbuiltTypeParser";
 import { IntegerType } from "./IntegerType";
 import { MemberAccsessType } from "./MemberAccsessType";
 import { Operator } from "./Operator";
@@ -59,5 +60,11 @@ export class StringType implements Type {
 
   toString(): string {
     return 'String';
+  }
+
+  getInterfaceType(): StringTypeDescription {
+    return {
+      typeName: 'StringType',
+    }
   }
 }

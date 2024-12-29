@@ -1,5 +1,6 @@
 import { getDefaultCompatibleOperands, getDefaultImplementedOperators, getDefaultOperatorResultType } from "./BaseType";
 import { EnumTypeType } from "./EnumTypeType";
+import { EnumInstanceTypeDescription } from "./InbuiltTypeParser";
 import { Operator } from "./Operator";
 import { Type } from "./Type";
 import { TypeProvider } from "./TypeProvider";
@@ -37,5 +38,14 @@ export class EnumInstanceType implements Type {
 
   public toString(): string {
     return 'EnumInstanceType(' + this.enumType.toString() + ')';
+  }
+
+  getInterfaceType(): EnumInstanceTypeDescription {
+    return {
+      typeName: 'EnumInstanceType',
+      properties: {
+        enumType: this.enumType.getInterfaceType()
+      }
+    }
   }
 }

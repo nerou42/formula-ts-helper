@@ -1,3 +1,4 @@
+import { FloatTypeDescription } from "./InbuiltTypeParser";
 import { NumberValueHelper } from "./NumberValueHelper";
 import { Operator } from "./Operator";
 import { Type } from "./Type";
@@ -29,5 +30,11 @@ export class FloatType implements Type {
 
   toString(): string {
     return 'float';
+  }
+
+  getInterfaceType(): FloatTypeDescription {
+    return {
+      typeName: 'FloatType',
+    }
   }
 }

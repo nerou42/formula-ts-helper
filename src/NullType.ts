@@ -1,4 +1,5 @@
 import { getDefaultCompatibleOperands, getDefaultImplementedOperators, getDefaultOperatorResultType } from "./BaseType";
+import { NullTypeDescription } from "./InbuiltTypeParser";
 import { Operator } from "./Operator";
 import { Type } from "./Type";
 import { TypeProvider } from "./TypeProvider";
@@ -34,5 +35,11 @@ export class NullType implements Type {
 
   toString(): string {
     return 'null';
+  }
+
+  getInterfaceType(): NullTypeDescription {
+    return {
+      typeName: 'NullType',
+    }
   }
 }

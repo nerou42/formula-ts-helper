@@ -1,3 +1,4 @@
+import { TypeDescription } from "./GenericTypeParser";
 import { Operator } from "./Operator";
 
 /**
@@ -16,4 +17,6 @@ export interface Type {
   getOperatorResultType(operator: Operator, otherType: Type | null): Type | null;
 
   toString(): string;
+
+  getInterfaceType(): TypeDescription;
 }

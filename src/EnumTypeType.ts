@@ -1,4 +1,6 @@
 import { EnumInstanceType } from "./EnumInstanceType";
+import { TypeDescription } from "./GenericTypeParser";
+import { ClassTypeDescription, EnumTypeTypeDescription } from "./InbuiltTypeParser";
 import { Type } from "./Type";
 import { ClassType } from "./classes/ClassType";
 import { FieldType } from "./classes/FieldType";
@@ -26,5 +28,12 @@ export class EnumTypeType extends ClassType {
 
   toString(): string {
     return 'EnumTypeType(' + this.identifier + ')';
+  }
+
+  getInterfaceType(): EnumTypeTypeDescription {
+    return {
+      ...super.getInterfaceType() as ClassTypeDescription,
+      typeName: 'EnumTypeType',
+    };
   }
 }

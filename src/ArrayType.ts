@@ -1,5 +1,6 @@
 import { getDefaultImplementedOperators } from "./BaseType";
 import { CompoundType } from "./CompoundType";
+import { ArrayTypeDescription } from "./InbuiltTypeParser";
 import { IntegerType } from "./IntegerType";
 import { IteratableType } from "./IteratableType";
 import { NeverType } from "./NeverType";
@@ -132,5 +133,15 @@ export class ArrayType extends ClassType implements IteratableType {
 
   getElementsType(): Type {
     return this.elementsType;
+  }
+
+  getInterfaceType(): ArrayTypeDescription {
+    return {
+      typeName: 'ArrayType',
+      properties: {
+        keyType: this.keyType.getInterfaceType(),
+        elementsType: this.elementsType.getInterfaceType(),
+      }
+    }
   }
 }

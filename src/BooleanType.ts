@@ -1,4 +1,5 @@
 import { getDefaultCompatibleOperands, getDefaultImplementedOperators, getDefaultOperatorResultType } from "./BaseType";
+import { BooleanTypeDescription } from "./InbuiltTypeParser";
 import { Operator } from "./Operator";
 import { Type } from "./Type";
 import { TypeProvider } from "./TypeProvider";
@@ -30,5 +31,11 @@ export class BooleanType implements Type {
 
   toString(): string {
     return 'boolean';
+  }
+
+  getInterfaceType(): BooleanTypeDescription {
+    return {
+      typeName: 'BooleanType',
+    }
   }
 }

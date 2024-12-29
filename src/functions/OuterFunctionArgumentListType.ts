@@ -1,4 +1,6 @@
 import { getDefaultCompatibleOperands, getDefaultImplementedOperators, getDefaultOperatorResultType } from "../BaseType";
+import { TypeDescription } from "../GenericTypeParser";
+import { OuterFunctionArgumentListTypeDescription } from "../InbuiltTypeParser";
 import { Operator } from "../Operator";
 import { Type } from "../Type";
 import { TypeProvider } from "../TypeProvider";
@@ -136,5 +138,27 @@ export class OuterFunctionArgumentListType implements Type {
 
   getOperatorResultType(operator: Operator, otherType: Type | null): Type | null {
     return getDefaultOperatorResultType(new TypeProvider(), this, operator, otherType);
+  }
+
+  getInterfaceType(): OuterFunctionArgumentListTypeDescription {
+    const argumentTypes: {
+      name: string | null;
+      optional: boolean;
+      type: TypeDescription;
+    }[] = [];
+    for (const argument of this.arguments) {
+      argumentTypes.push({
+        name: argument.name,
+        optional: argument.optional,
+        type: argument.type.getInterfaceType()
+      });
+    }
+    return {
+      typeName: "OuterFunctionArgumentListType",
+      properties: {
+        arguments: argumentTypes,
+        varg: this.isVArgs
+      }
+    }
   }
 }

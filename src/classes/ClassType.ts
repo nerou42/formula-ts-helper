@@ -1,4 +1,6 @@
 import { getDefaultCompatibleOperands, getDefaultImplementedOperators, getDefaultOperatorResultType } from "../BaseType";
+import { TypeDescription } from "../GenericTypeParser";
+import { ClassTypeDescription } from "../InbuiltTypeParser";
 import { MemberAccsessType } from "../MemberAccsessType";
 import { Operator } from "../Operator";
 import { Type } from "../Type";
@@ -78,7 +80,7 @@ export class ClassType implements Type {
 
   getOperatorResultType(operator: Operator, otherType: Type | null): Type | null {
     const defaultResult = getDefaultOperatorResultType(new TypeProvider(), this, operator, otherType);
-    if(defaultResult !== null) {
+    if (defaultResult !== null) {
       return defaultResult;
     }
     switch (operator) {
@@ -96,5 +98,26 @@ export class ClassType implements Type {
 
   toString(): string {
     return 'classType(' + this.identifier + ')';
+  }
+
+  getInterfaceType(): TypeDescription {
+    const fields: {
+      identifier: string;
+      type: TypeDescription;
+      final: boolean;
+    }[] = [];
+    this.fields.forEach((field, key) => fields.push({
+      identifier: key,
+      type: field.type.getInterfaceType(),
+      final: field.final,
+    }));
+    return {
+      typeName: 'ClassType',
+      properties: {
+        fields,
+        identifier: this.identifier,
+        parentType: this.parentType?.getInterfaceType() || null
+      }
+    }
   }
 }

@@ -1,4 +1,5 @@
 import { getDefaultCompatibleOperands, getDefaultImplementedOperators, getDefaultOperatorResultType } from "./BaseType";
+import { NeverTypeDescription } from "./InbuiltTypeParser";
 import { Operator } from "./Operator";
 import { Type } from "./Type";
 import { TypeProvider } from "./TypeProvider";
@@ -34,5 +35,11 @@ export class NeverType implements Type {
 
   toString(): string {
     return 'never';
+  }
+
+  getInterfaceType(): NeverTypeDescription {
+    return {
+      typeName: 'NeverType',
+    }
   }
 }

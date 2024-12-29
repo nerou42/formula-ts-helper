@@ -1,4 +1,5 @@
 import { getDefaultOperatorResultType } from "./BaseType";
+import { CompoundTypeDescription } from "./InbuiltTypeParser";
 import { NeverType } from "./NeverType";
 import { Operator, OperatorHelper, OperatorType } from "./Operator";
 import { Type } from "./Type";
@@ -104,7 +105,7 @@ export class CompoundType implements Type {
         resultTypes.push(result);
       }
     }
-    if(resultTypes.length === 0) {
+    if (resultTypes.length === 0) {
       return null;
     }
     return CompoundType.buildFromTypes(resultTypes);
@@ -173,5 +174,14 @@ export class CompoundType implements Type {
 
   getTypes(): Type[] {
     return this.types;
+  }
+
+  getInterfaceType(): CompoundTypeDescription {
+    return {
+      typeName: 'CompoundType',
+      properties: {
+        types: this.types.map(t => t.getInterfaceType())
+      }
+    }
   }
 }

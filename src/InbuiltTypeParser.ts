@@ -30,7 +30,7 @@ export interface ClassTypeDescriptionAbstract {
     identifier: string;
     fields: {
       identifier: string;
-      type: ClassTypeDescription;
+      type: TypeDescription;
       final: boolean;
     }[];
   }
@@ -69,7 +69,7 @@ export interface OuterFunctionArgumentListTypeDescription {
   properties: {
     varg: boolean;
     arguments: {
-      name: string;
+      name: string | null;
       optional: boolean;
       type: TypeDescription;
     }[];
@@ -87,10 +87,6 @@ export interface ArrayTypeDescription {
 
 export interface BooleanTypeDescription {
   typeName: 'BooleanType';
-  properties: {
-    keyType: TypeDescription;
-    elementsType: TypeDescription;
-  }
 }
 
 export interface CompoundTypeDescription {

@@ -1,4 +1,6 @@
 import { getDefaultCompatibleOperands, getDefaultImplementedOperators, getDefaultOperatorResultType } from "../BaseType";
+import { TypeDescription } from "../GenericTypeParser";
+import { FunctionTypeDescription } from "../InbuiltTypeParser";
 import { Operator } from "../Operator";
 import { Type } from "../Type";
 import { TypeProvider } from "../TypeProvider";
@@ -69,5 +71,16 @@ export class FunctionType implements Type {
       }
     }
     return null;
+  }
+
+  getInterfaceType(): TypeDescription {
+    return {
+      typeName: 'FunctionType',
+      properties: {
+        arguments: this.arguments.getInterfaceType(),
+        generalReturnType: this.generalReturnType.getInterfaceType(),
+        specificReturnType: null, // @fixme
+      }
+    }
   }
 }
