@@ -1,4 +1,5 @@
 import { getDefaultCompatibleOperands, getDefaultImplementedOperators, getDefaultOperatorResultType } from "./BaseType";
+import { BooleanType } from "./BooleanType";
 import { DateIntervalType } from "./DateIntervalType";
 import { DateTimeImmutableTypeDescription } from "./InbuiltTypeParser";
 import { IntegerType } from "./IntegerType";
@@ -21,7 +22,7 @@ export class DateTimeImmutableType implements Type {
   }
 
   getImplementedOperators(): Operator[] {
-    return getDefaultImplementedOperators().concat([Operator.ADDITION, Operator.SUBTRACTION]);
+    return getDefaultImplementedOperators().concat([Operator.ADDITION, Operator.SUBTRACTION, Operator.LESS, Operator.GREATER]);
   }
 
   getCompatibleOperands(operator: Operator): Type[] {
@@ -30,6 +31,10 @@ export class DateTimeImmutableType implements Type {
       case Operator.ADDITION:
       case Operator.SUBTRACTION:
         compatible.push(new DateIntervalType());
+        break;
+      case Operator.LESS:
+      case Operator.GREATER:
+        compatible.push(new DateTimeImmutableType());
         break;
       case Operator.TYPE_CAST:
         compatible.push(new TypeType(new IntegerType()));
@@ -50,8 +55,14 @@ export class DateTimeImmutableType implements Type {
           return new DateTimeImmutableType();
         }
         break;
+      case Operator.LESS:
+      case Operator.GREATER:
+        if (otherType instanceof DateTimeImmutableType) {
+          return new BooleanType();
+        }
+        break;
       case Operator.TYPE_CAST:
-        if(otherType !== null && otherType instanceof TypeType && otherType.getType() instanceof IntegerType) {
+        if (otherType !== null && otherType instanceof TypeType && otherType.getType() instanceof IntegerType) {
           return new IntegerType();
         }
         break;

@@ -166,6 +166,18 @@ const typeDescriptions: TypeDescription[] = [
           resultType: new DateTimeImmutableType(),
         }]
       }, {
+        operator: Operator.LESS,
+        compatibleTypes: [{
+          operandType: new DateTimeImmutableType(),
+          resultType: new BooleanType(),
+        }]
+      }, {
+        operator: Operator.GREATER,
+        compatibleTypes: [{
+          operandType: new DateTimeImmutableType(),
+          resultType: new BooleanType(),
+        }]
+      }, {
         operator: Operator.TYPE_CAST,
         compatibleTypes: [
           { operandType: new TypeType(new BooleanType()), resultType: new BooleanType() },
