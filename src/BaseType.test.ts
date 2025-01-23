@@ -151,6 +151,7 @@ const typeDescriptions: TypeDescription[] = [
   },
   {
     type: new DateTimeImmutableType(),
+    excludeTypeCasts: true,
     operatorDescriptions: [
       {
         operator: Operator.ADDITION,
@@ -164,6 +165,13 @@ const typeDescriptions: TypeDescription[] = [
           operandType: new DateIntervalType(),
           resultType: new DateTimeImmutableType(),
         }]
+      }, {
+        operator: Operator.TYPE_CAST,
+        compatibleTypes: [
+          { operandType: new TypeType(new BooleanType()), resultType: new BooleanType() },
+          { operandType: new TypeType(new StringType()), resultType: new StringType() },
+          { operandType: new TypeType(new IntegerType()), resultType: new IntegerType() },
+        ],
       }
     ]
   },

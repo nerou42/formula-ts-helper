@@ -1,9 +1,11 @@
 import { getDefaultCompatibleOperands, getDefaultImplementedOperators, getDefaultOperatorResultType } from "./BaseType";
 import { DateIntervalType } from "./DateIntervalType";
 import { DateTimeImmutableTypeDescription } from "./InbuiltTypeParser";
+import { IntegerType } from "./IntegerType";
 import { Operator } from "./Operator";
 import { Type } from "./Type";
 import { TypeProvider } from "./TypeProvider";
+import { TypeType } from "./TypeType";
 
 /**
  * @author Timo Lehnertz
@@ -29,13 +31,16 @@ export class DateTimeImmutableType implements Type {
       case Operator.SUBTRACTION:
         compatible.push(new DateIntervalType());
         break;
+      case Operator.TYPE_CAST:
+        compatible.push(new TypeType(new IntegerType()));
+        break;
     }
     return compatible;
   }
 
   getOperatorResultType(operator: Operator, otherType: Type | null): Type | null {
     const defaultResult = getDefaultOperatorResultType(new TypeProvider(), this, operator, otherType);
-    if(defaultResult !== null) {
+    if (defaultResult !== null) {
       return defaultResult;
     }
     switch (operator) {
@@ -43,6 +48,11 @@ export class DateTimeImmutableType implements Type {
       case Operator.SUBTRACTION:
         if (otherType instanceof DateIntervalType) {
           return new DateTimeImmutableType();
+        }
+        break;
+      case Operator.TYPE_CAST:
+        if(otherType !== null && otherType instanceof TypeType && otherType.getType() instanceof IntegerType) {
+          return new IntegerType();
         }
         break;
     }
