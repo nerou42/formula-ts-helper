@@ -31,6 +31,10 @@ export enum Operator {
   ARRAY_ACCESS = 20,
   CALL = 21,
   TYPE_CAST = 22,
+  BITWISE_AND = 23,
+  BITWISE_OR = 24,
+  LEFT_SHIFT = 25,
+  RIGHT_SHIFT = 26,
 }
 
 export class OperatorHelper {
@@ -80,15 +84,23 @@ export class OperatorHelper {
       case Operator.TYPE_CAST:
         return 'Typecast';
       case Operator.ARRAY_ACCESS:
-        return 'Array accsess';
+        return 'Array access';
       case Operator.CALL:
-        return 'Functioncall';
+        return 'Function call';
       case Operator.LOGICAL_OR:
         return 'Logical or';
+      case Operator.BITWISE_AND:
+        return 'bitwise and';
+      case Operator.BITWISE_OR:
+        return 'bitwise or';
+      case Operator.LEFT_SHIFT:
+        return 'Left shift';
+      case Operator.RIGHT_SHIFT:
+        return 'Right shift';
     }
   }
 
-  toString(leftExpression: null|string, rightExpression: null|string): string {
+  toString(leftExpression: null | string, rightExpression: null | string): string {
     leftExpression ??= '';
     rightExpression ??= '';
     switch (this.operatorType) {
@@ -99,7 +111,7 @@ export class OperatorHelper {
       case Operator.UNARY_PLUS:
         return '+' + leftExpression;
       case Operator.UNARY_MINUS:
-        return  '-' + leftExpression;
+        return '-' + leftExpression;
       case Operator.LOGICAL_NOT:
         return '!' + leftExpression;
       case Operator.NEW:
@@ -138,6 +150,14 @@ export class OperatorHelper {
         return leftExpression + '[' + rightExpression + ']';
       case Operator.CALL:
         return leftExpression + '(' + rightExpression + ')';
+      case Operator.BITWISE_AND:
+        return leftExpression + '&' + rightExpression;
+      case Operator.BITWISE_OR:
+        return leftExpression + '|' + rightExpression;
+      case Operator.LEFT_SHIFT:
+        return leftExpression + '<<' + rightExpression;
+      case Operator.RIGHT_SHIFT:
+        return leftExpression + '>>' + rightExpression;
     }
   }
 
@@ -162,6 +182,10 @@ export class OperatorHelper {
       case Operator.CALL:
       case Operator.TYPE_CAST:
       case Operator.ARRAY_ACCESS:
+      case Operator.BITWISE_AND:
+      case Operator.BITWISE_OR:
+      case Operator.LEFT_SHIFT:
+      case Operator.RIGHT_SHIFT:
         return OperatorType.InfixOperator;
       case Operator.NEW:
       case Operator.UNARY_PLUS:
@@ -195,6 +219,10 @@ export class OperatorHelper {
       Operator.ARRAY_ACCESS,
       Operator.CALL,
       Operator.TYPE_CAST,
+      Operator.BITWISE_AND,
+      Operator.BITWISE_OR,
+      Operator.LEFT_SHIFT,
+      Operator.RIGHT_SHIFT,
     ];
   }
 }
